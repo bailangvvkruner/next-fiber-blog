@@ -42,6 +42,9 @@ const Comment: React.FC<CommentProps> = ({ type, articleId, topicId }) => {
           user: result.data
         }
       })
+    } else if (result.code === 401) {
+      // 401说明登录过期，从本地缓存中删除token
+      localStorage.removeItem(clientAuthTokenKey)
     }
   }, [setState])
 
@@ -211,6 +214,7 @@ export const CommentEditor: React.FC<{
           />
         ) : (
           <Button text="Github登录" icon="i-tabler:brand-github"
+                  type="button"
                   onClick={() => {
                     const base64Path = btoa(window.location.pathname)
                     window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID}&state=${base64Path}&scope=user:email`;
