@@ -78,10 +78,10 @@ func (self *CommentRepo) ManagePage(query *usercase.CommentQueryForm) (*usercase
 		Select("bu.username as username").
 		LeftJoin("t_blog_article as ba").On("ba.article_id").EqRaw("bc.article_id").BuildAsSelect().
 		Select("ba.title as article_title").
-		WhereByCondition(query.ArticleId > 0, "bc.article_id").Eq(query.ArticleId).
+		WhereByCondition(query.CommentType > 0, "bc.comment_type").Eq(query.CommentType).
+		AndByCondition(query.ArticleId > 0, "bc.article_id").Eq(query.ArticleId).
 		AndByCondition(query.TopicId > 0, "bc.topic_id").Eq(query.TopicId).
 		AndByCondition(query.Fid > 0, "bc.fid").Eq(query.Fid).
-		AndByCondition(query.CommentType > 0, "bc.comment_type").Eq(query.CommentType).
 		AndByCondition(query.CreateTimeBegin != "", "bc.create_time").Ge(query.CreateTimeBegin).
 		AndByCondition(query.CreateTimeEnd != "", "bc.create_time").Le(query.CreateTimeEnd).
 		And("bc.delete_at").EqRaw("0").BuildAsSelect().

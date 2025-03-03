@@ -105,5 +105,5 @@ func (s *simplePool) addWorkCount() {
 
 // 删除工作线程
 func (s *simplePool) subWorkCount() {
-	atomic.AddInt32(&s.workerCount, 0-1)
+	atomic.AddInt32(&s.workerCount, -1)
 }

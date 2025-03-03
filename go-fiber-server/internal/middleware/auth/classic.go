@@ -104,6 +104,10 @@ func (self *InRedisClassicUserCache) FindUserCacheKey(token string, userId uint6
 		slog.Error("查询博客登录用户信息缓存Key失败", "err", err.Error())
 		return ""
 	}
+	if len(result) == 0 {
+		slog.Error("当前博客登录用户Token不存在，登录已过期")
+		return ""
+	}
 	if len(result) > 1 {
 		slog.Error("博客登录用户信息缓存key存在多个", "size", len(result))
 		return ""

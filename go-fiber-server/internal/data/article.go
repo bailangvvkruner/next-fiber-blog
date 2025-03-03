@@ -125,9 +125,9 @@ func (self *ArticleRepo) Page(query *usercase.ArticleQueryForm) ([]*usercase.Art
 		AndByCondition(query.TagId > 0, fmt.Sprintf("%d", query.TagId)).EqRaw("ANY(ba.tag_ids)").
 		AndByCondition(query.CategoryId > 0, fmt.Sprintf("%d", query.CategoryId)).EqRaw("ANY(ba.category_ids)").
 		AndByCondition(!query.IsAdmin, "ba.is_top").EqRaw("false").
-		AndByCondition(query.Status != nil, "ba.status").Eq(query.Status).
 		AndByCondition(query.CreateTimeBegin != "", "ba.create_time").Ge(query.CreateTimeBegin).
 		AndByCondition(query.CreateTimeEnd != "", "ba.create_time").Le(query.CreateTimeEnd).
+		AndByCondition(query.Status != nil, "ba.status").Eq(query.Status).
 		And("ba.delete_at").EqRaw("0").BuildAsSelect().
 		GroupBy("ba.article_id").OrderBy("ba.is_top desc", "ba.sort", "ba.create_time desc")
 	row := self.db.QueryRow(context.Background(), builder.CountSql(), builder.Args()...)
@@ -202,10 +202,10 @@ func (self *ArticleRepo) ListRelatedArticle(articleId uint64, limit int) ([]user
 		OrderBy("ba2.sort", "ba2.view_num desc", "ba2.create_time desc").
 		Limit(int64(limit))
 	rows, err := self.db.Query(context.Background(), builder.Sql(), articleId)
+	defer rows.Close()
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 	return pgx.CollectRows(rows, func(row pgx.CollectableRow) (usercase.SimpleArticleVo, error) {
 		vo := usercase.SimpleArticleVo{}
 		scanErr := row.Scan(&vo.ArticleId, &vo.Title, &vo.CoverUrl)
