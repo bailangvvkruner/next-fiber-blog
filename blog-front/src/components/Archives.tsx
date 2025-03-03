@@ -6,7 +6,7 @@ const Archives: React.FC = async () => {
   const result = await articleArchives();
   return (
     <DynamicCard title="ARCHIVES" icon="i-tabler:archive">
-      <ul className="list-none text-sm">
+      <ul className="list-none text-sm flex flex-col gap-row-2.5">
         { result.data.map(item => (
           <li key={item.month} className="flex justify-between">
             <time dateTime={item.month}>{ item.month }</time>
