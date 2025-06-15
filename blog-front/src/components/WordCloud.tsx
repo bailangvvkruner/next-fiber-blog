@@ -4,7 +4,7 @@ import '@/styles/components/tags-word-cloud.scss'
 import React, { useEffect } from 'react'
 import DynamicCard from '@/components/DynamicCard'
 import TagCloud from 'TagCloud'
-import { useRouter } from 'next-nprogress-bar'
+import { useRouter } from '@bprogress/next'
 
 /**
  * 标签词云组件
