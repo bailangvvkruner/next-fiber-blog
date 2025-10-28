@@ -78,31 +78,6 @@ const readerSavaLoginData = () => {
   }
 }
 
-const loginCardRef = ref();
-const cardLightStyle = reactive({
-  left: '0px',
-  top: '0px',
-  display: 'none'
-})
-let isLimit: boolean = false;
-const handleCardMouseMove = (event: MouseEvent) => {
-  if (isLimit) {
-    return;
-  }
-  isLimit = true;
-  window.requestAnimationFrame(() => {
-    const { clientX, clientY } = event;
-    const { x, y } = loginCardRef.value.getBoundingClientRect();
-    cardLightStyle.left = clientX - x - 60 + 'px';
-    cardLightStyle.top = clientY - y - 60 + 'px';
-    cardLightStyle.display = 'block';
-    isLimit = false;
-  })
-};
-const handleCardMouseLeave = () => {
-  cardLightStyle.display = 'none';
-}
-
 onMounted(() => {
   readerSavaLoginData();
 })
@@ -112,8 +87,7 @@ onMounted(() => {
   <div class="login-container flex">
     <div class="left-background"></div>
     <div class="right-div flex justify-center item-center">
-      <div ref="loginCardRef" class="login-card radius-xl" @mousemove="event => handleCardMouseMove(event)" @mouseleave="handleCardMouseLeave">
-        <div class="light" :style="cardLightStyle"/>
+      <div ref="loginCardRef" class="login-card radius-xl">
         <h1 class="title">欢迎访问博客后台管理系统</h1>
         <a-form :model="formData" layout="vertical" @submit-success="handleSubmit">
           <a-form-item field="username" label="用户名" hide-label :rules="[{required: true, message: '用户名不能为空'}]">
@@ -166,9 +140,13 @@ onMounted(() => {
       overflow: hidden;
       row-gap: var(--space-sm);
       padding: var(--space-xxl);
-      box-shadow: 0 0 24px var(--shadom-color);
+      box-shadow: 0 0 8px var(--shadow-color);
       background-color: transparent;
       z-index: 2;
+      transition: all 300ms ease;
+      &:hover {
+        box-shadow: 0 0 16px var(--shadow-color);
+      }
       &::before {
         content: "";
         position: absolute;
@@ -178,14 +156,6 @@ onMounted(() => {
         right: 0;
         background-color: var(--card-color);
         z-index: -3;
-      }
-      .light {
-        position: absolute;
-        background-color: #32CD99;
-        filter: blur(80px);
-        height: 120px;
-        width: 120px;
-        z-index: -2;
       }
       .title {
         font-weight: 600;

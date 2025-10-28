@@ -28,7 +28,7 @@
   --background-color: var(--background-light-color);
   --card-color: var(--card-light-color);
   --border-color: var(--border-light-color);
-  --shadom-color: var(--shadow-light-color);
+  --shadow-color: var(--shadow-light-color);
 }
 
 .dark {
@@ -36,7 +36,7 @@
   --background-color: var(--background-dark-color);
   --card-color: var(--card-dark-color);
   --border-color: var(--border-dark-color);
-  --shadom-color: var(--shadow-dark-color);
+  --shadow-color: var(--shadow-dark-color);
 }
 
 *,*::before,*::after {

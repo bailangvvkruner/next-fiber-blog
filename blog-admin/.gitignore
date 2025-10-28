@@ -29,3 +29,5 @@ coverage
 
 *.tsbuildinfo
 .vercel
+
+pnpm-lock.yaml

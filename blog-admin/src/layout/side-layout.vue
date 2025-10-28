@@ -95,7 +95,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .side-div {
-  box-shadow: 8px 0 8px -8px var(--shadom-color);
+  box-shadow: 8px 0 8px -8px var(--shadow-color);
   height: 100%;
   border-top: 1px solid var(--border-color);
   .logo {
