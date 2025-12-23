@@ -15,9 +15,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags="-w -s" -o 
 # 第二阶段：构建 Next.js 前台（使用最新Node LTS）
 FROM node:lts-alpine AS next-builder
 WORKDIR /app
-COPY blog-front/package.json blog-front/package-lock.json ./
-# 安装最新依赖，修复已知漏洞
-RUN npm ci && npm audit fix --force
+# 只复制package.json，因为package-lock.json可能不存在
+COPY blog-front/package.json ./
+# 安装最新依赖，修复已知漏洞（使用npm install代替npm ci）
+RUN npm install && npm audit fix --force
 COPY blog-front/ .
 # Next.js需要构建为静态文件
 RUN npm run build
@@ -25,8 +26,9 @@ RUN npm run build
 # 第三阶段：构建 Vue 管理后台（使用最新Node LTS）
 FROM node:lts-alpine AS vue-builder
 WORKDIR /app
-COPY blog-admin/package.json blog-admin/package-lock.json ./
-RUN npm ci && npm audit fix --force
+# 只复制package.json，因为package-lock.json可能不存在
+COPY blog-admin/package.json ./
+RUN npm install && npm audit fix --force
 COPY blog-admin/ .
 RUN npm run build
 
