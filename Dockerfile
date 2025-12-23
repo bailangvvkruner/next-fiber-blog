@@ -17,10 +17,10 @@ FROM node:lts-alpine AS next-builder
 WORKDIR /app
 # 只复制package.json，因为package-lock.json可能不存在
 COPY blog-front/package.json ./
-# # 安装最新依赖，修复已知漏洞（使用npm install代替npm ci）
-# RUN npm install && npm audit fix --force
-# 安装依赖，使用--audit=false避免安装时的安全警告阻塞构建
-RUN npm install --audit=false
+# 安装最新依赖，使用--legacy-peer-deps处理peer依赖问题
+RUN npm install --legacy-peer-deps --no-audit
+# 单独运行安全审计但不强制修复（仅显示报告）
+RUN npm audit || true
 COPY blog-front/ .
 # Next.js需要构建为静态文件
 RUN npm run build
@@ -30,10 +30,10 @@ FROM node:lts-alpine AS vue-builder
 WORKDIR /app
 # 只复制package.json，因为package-lock.json可能不存在
 COPY blog-admin/package.json ./
-# # 安装最新依赖，修复已知漏洞（使用npm install代替npm ci）
-# RUN npm install && npm audit fix --force
-# 安装依赖，使用--audit=false避免安装时的安全警告阻塞构建
-RUN npm install --audit=false
+# 安装最新依赖，使用--legacy-peer-deps处理peer依赖问题
+RUN npm install --legacy-peer-deps --no-audit
+# 单独运行安全审计但不强制修复（仅显示报告）
+RUN npm audit || true
 COPY blog-admin/ .
 RUN npm run build
 
