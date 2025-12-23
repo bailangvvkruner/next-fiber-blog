@@ -4,7 +4,7 @@ name: next-fiber-blog Docker Image CI/CD Pipeline
 on:
   workflow_dispatch:
   push:
-    branches: [ rc ]
+    branches: [ main ]
   # schedule:
   #   - cron: '0 3 * * *' # 每天构建一次（可选）
   # schedule:
@@ -20,7 +20,7 @@ permissions:
 env:
   DOCKER_REPO: bailangvvking/next-fiber-blog
   IMAGE_NAME: next-fiber-blog
-  IMAGE_TAG: rc
+  IMAGE_TAG: latest
 
 jobs:
   build-and-push:
@@ -81,7 +81,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:rc
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
           format: 'sarif'
           output: 'trivy-results.sarif'
           # 禁用缓存以减少存储使用
